@@ -311,7 +311,7 @@ class Interpreter implements Expr.Visitor<Object>,
         if (left instanceof Double) outLeft = Double.toString((double)left);
         if (right instanceof Double) outRight = Double.toString((double)right);
         outLeft = outLeft.replaceAll("\\.0$", "");
-        outRight = outRight.replaceAll("\\.0", "");
+        outRight = outRight.replaceAll("\\.0$", "");
         if (left instanceof String) outLeft = (String) left;
         if (right instanceof String) outRight = (String) right;
 
