@@ -64,7 +64,6 @@ class Scanner {
       case '{': addToken(LEFT_BRACE); break;
       case '}': addToken(RIGHT_BRACE); break;
       case ',': addToken(COMMA); break;
-      case '.': addToken(DOT); break;
       case '-': addToken(MINUS); break;
       case '+': addToken(PLUS); break;
       case ';': addToken(SEMICOLON); break;
@@ -81,6 +80,9 @@ class Scanner {
         break;
       case '>':
         addToken(match('=') ? GREATER_EQUAL : GREATER);
+        break;
+      case '.':
+        addToken(match('.') ? CONCAT : DOT);
         break;
 //< two-char-tokens
 //> slash

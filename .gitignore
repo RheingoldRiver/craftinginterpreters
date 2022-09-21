@@ -16,3 +16,7 @@ xcuserdata/
 # Dart stuff.
 /tool/.dart_tool/
 /tool/.packages
+
+/java/com/craftinginterpreters/lox/.idea/
+/java/com/craftinginterpreters/lox/lox.iml
+/java/com/craftinginterpreters/lox/out/
