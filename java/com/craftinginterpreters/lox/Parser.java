@@ -372,7 +372,7 @@ class Parser {
   private Expr term() {
     Expr expr = factor();
 
-    while (match(MINUS, PLUS)) {
+    while (match(MINUS, PLUS, CONCAT)) {
       Token operator = previous();
       Expr right = factor();
       expr = new Expr.Binary(expr, operator, right);
@@ -433,7 +433,6 @@ class Parser {
 //> Functions call
   private Expr call() {
     Expr expr = primary();
-
     while (true) { // [while-true]
       if (match(LEFT_PAREN)) {
         expr = finishCall(expr);
@@ -447,7 +446,6 @@ class Parser {
         break;
       }
     }
-
     return expr;
   }
 //< Functions call

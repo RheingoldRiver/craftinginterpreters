@@ -299,24 +299,24 @@ class Interpreter implements Expr.Visitor<Object>,
         checkNumberOperands(expr.operator, left, right);
 //< check-minus-operand
         return (double)left - (double)right;
-//> binary-plus
       case PLUS:
-        if (left instanceof Double && right instanceof Double) {
-          return (double)left + (double)right;
-        } // [plus]
+//> check-plus-operand
+        checkNumberOperands(expr.operator, left, right);
+        return (double)left + (double)right;
+//< check-plus-operand
+      case CONCAT:
+//> check-concat-operand
+        String outLeft = "";
+        String outRight = "";
+        if (left instanceof Double) outLeft = Double.toString((double)left);
+        if (right instanceof Double) outRight = Double.toString((double)right);
+        outLeft = outLeft.replaceAll("\\.0$", "");
+        outRight = outRight.replaceAll("\\.0", "");
+        if (left instanceof String) outLeft = (String) left;
+        if (right instanceof String) outRight = (String) right;
 
-        if (left instanceof String && right instanceof String) {
-          return (String)left + (String)right;
-        }
-
-/* Evaluating Expressions binary-plus < Evaluating Expressions string-wrong-type
-        break;
-*/
-//> string-wrong-type
-        throw new RuntimeError(expr.operator,
-            "Operands must be two numbers or two strings.");
-//< string-wrong-type
-//< binary-plus
+        return outLeft + outRight;
+//< check-concat-operand
       case SLASH:
 //> check-slash-operand
         checkNumberOperands(expr.operator, left, right);
