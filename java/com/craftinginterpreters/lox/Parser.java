@@ -18,6 +18,7 @@ class Parser {
 //< parse-error
   private final List<Token> tokens;
   private int current = 0;
+  private List<Stmt> statements = new ArrayList<>();
 
   Parser(List<Token> tokens) {
     this.tokens = tokens;
@@ -33,7 +34,6 @@ class Parser {
 */
 //> Statements and State parse
   List<Stmt> parse() {
-    List<Stmt> statements = new ArrayList<>();
     while (!isAtEnd()) {
 /* Statements and State parse < Statements and State parse-declaration
       statements.add(statement());
@@ -245,6 +245,9 @@ class Parser {
 //> Statements and State parse-expression-statement
   private Stmt expressionStatement() {
     Expr expr = expression();
+    if (peek().type == EOF && statements.size() == 0) {
+      return new Stmt.Print(expr);
+    }
     consume(SEMICOLON, "Expect ';' after expression.");
     return new Stmt.Expression(expr);
   }
