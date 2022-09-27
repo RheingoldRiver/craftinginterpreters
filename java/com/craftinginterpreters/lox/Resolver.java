@@ -14,7 +14,7 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 //> function-type-field
   private FunctionType currentFunction = FunctionType.NONE;
 //< function-type-field
-
+  private int loopDepth = 0;
   Resolver(Interpreter interpreter) {
     this.interpreter = interpreter;
   }
@@ -193,6 +193,15 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     return null;
   }
 //< visit-return-stmt
+  @Override
+  public Void visitBreakStmt(Stmt.Break stmt) {
+    if (loopDepth == 0) {
+      Lox.error(stmt.keyword,
+              "Can't break from outside a loop.");
+    }
+    // break statements have no values, so there is nothing to resolve
+    return null;
+  }
 //> visit-var-stmt
   @Override
   public Void visitVarStmt(Stmt.Var stmt) {
@@ -207,8 +216,10 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 //> visit-while-stmt
   @Override
   public Void visitWhileStmt(Stmt.While stmt) {
+    loopDepth++;
     resolve(stmt.condition);
     resolve(stmt.body);
+    loopDepth--;
     return null;
   }
 //< visit-while-stmt

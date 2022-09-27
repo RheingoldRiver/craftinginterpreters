@@ -78,6 +78,7 @@ public class GenerateAst {
 //> Functions return-ast
       "Return     : Token keyword, Expr value",
 //< Functions return-ast
+      "Break      : Token keyword",
 /* Statements and State var-stmt-ast < Control Flow while-ast
       "Var        : Token name, Expr initializer"
 */

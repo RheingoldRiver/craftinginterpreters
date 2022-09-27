@@ -115,6 +115,7 @@ class Parser {
 //> Functions match-return
     if (match(RETURN)) return returnStatement();
 //< Functions match-return
+    if (match(BREAK)) return breakStatement();
 //> Control Flow match-while
     if (match(WHILE)) return whileStatement();
 //< Control Flow match-while
@@ -219,6 +220,11 @@ class Parser {
     return new Stmt.Return(keyword, value);
   }
 //< Functions parse-return-statement
+  private Stmt breakStatement() {
+    Token keyword = previous();
+    consume(SEMICOLON, "Expect ';' after break keyword.");
+    return new Stmt.Break(keyword);
+  }
 //> Statements and State parse-var-declaration
   private Stmt varDeclaration() {
     Token name = consume(IDENTIFIER, "Expect variable name.");
@@ -559,6 +565,7 @@ class Parser {
         case WHILE:
         case PRINT:
         case RETURN:
+        case BREAK:
           return;
       }
 

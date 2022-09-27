@@ -220,6 +220,10 @@ class Interpreter implements Expr.Visitor<Object>,
     throw new Return(value);
   }
 //< Functions visit-return
+  @Override
+  public Void visitBreakStmt(Stmt.Break stmt) {
+    throw new Break();
+  }
 //> Statements and State visit-var
   @Override
   public Void visitVarStmt(Stmt.Var stmt) {
@@ -236,7 +240,11 @@ class Interpreter implements Expr.Visitor<Object>,
   @Override
   public Void visitWhileStmt(Stmt.While stmt) {
     while (isTruthy(evaluate(stmt.condition))) {
-      execute(stmt.body);
+      try {
+        execute(stmt.body);
+      } catch (Break error) {
+        break;
+      }
     }
     return null;
   }
